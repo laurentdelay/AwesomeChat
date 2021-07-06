@@ -8,10 +8,7 @@ import CustomLink from "~/components/Link";
 
 import useForm from "~/hooks/useForm";
 import { LoginStackParamList } from "~/routes/LoginRoutes";
-
-type ResetPasswordInputs = {
-  email: string;
-};
+import { ResetPasswordInputs } from "~/utils/types/authTypes";
 
 type ResetPasswordNavigationProp = StackNavigationProp<
   LoginStackParamList,

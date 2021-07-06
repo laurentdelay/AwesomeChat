@@ -14,11 +14,7 @@ function useForm<FormValuesType extends Record<string, any>>({
       return { ...prevValues, [inputName]: newValue } as FormValuesType;
     });
 
-  const handleSubmit = (submitCallback: (data: FormValuesType) => void) => {
-    submitCallback(formValues);
-  };
-
-  return { fields: formValues, updateValue, handleSubmit };
+  return { fields: formValues, updateValue };
 }
 
 export default useForm;

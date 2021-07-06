@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -7,11 +7,9 @@ import CustomButton from "~/components/CustomButton";
 import CustomLink from "~/components/Link";
 import useForm from "~/hooks/useForm";
 import { LoginStackParamList } from "~/routes/LoginRoutes";
-
-type SignInInputs = {
-  email: string;
-  password: string;
-};
+import { useAuth } from "~/contexts/AuthContext";
+import { SignInInputs } from "~/utils/types/authTypes";
+import { login } from "~/utils/authFunctions";
 
 type SignInNavigationProp = StackNavigationProp<LoginStackParamList, "Sign In">;
 
@@ -20,13 +18,23 @@ type SignInScreenProps = {
 };
 
 const SignInScreen = ({ navigation }: SignInScreenProps) => {
-  const { fields, updateValue, handleSubmit } = useForm<SignInInputs>({
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { user } = useAuth();
+  const { fields, updateValue } = useForm<SignInInputs>({
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = useCallback((data) => {
-    navigation.navigate("Home");
-  }, []);
+  const handleSubmit = async () => {
+    setIsLoading(true);
+
+    try {
+      await login(fields);
+    } catch (error) {
+      console.log(error.code);
+    }
+    setIsLoading(false);
+  };
 
   return (
     <View style={signInStyles.container}>
@@ -52,12 +60,11 @@ const SignInScreen = ({ navigation }: SignInScreenProps) => {
       />
 
       <CustomButton
-        onPress={(_) => {
-          handleSubmit(onSubmit);
-        }}
+        onPress={handleSubmit}
         style={signInStyles.button}
+        disabled={isLoading}
       >
-        Connexion
+        {!isLoading ? "Connexion" : "Loading..."}
       </CustomButton>
       <CustomLink
         title="Créer un compte"

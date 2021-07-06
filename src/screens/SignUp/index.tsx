@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -7,12 +7,8 @@ import { LoginStackParamList } from "~/routes/LoginRoutes";
 import ControlledTextInput from "~/components/ControlledTextInput";
 import CustomButton from "~/components/CustomButton";
 import CustomLink from "~/components/Link";
-
-type SignUpInputs = {
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+import { SignUpInputs } from "~/utils/types/authTypes";
+import { register } from "~/utils/authFunctions";
 
 type SignUpNavigationProp = StackNavigationProp<LoginStackParamList, "Sign Up">;
 
@@ -21,13 +17,19 @@ type SignUpScreenProps = {
 };
 
 const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
-  const { fields, updateValue, handleSubmit } = useForm<SignUpInputs>({
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { fields, updateValue } = useForm<SignUpInputs>({
     defaultValues: { email: "", password: "", confirmPassword: "" },
   });
 
-  const onSubmit = useCallback((data) => {
-    navigation.navigate("Home");
-  }, []);
+  const handleSubmit = async () => {
+    try {
+      await register(fields);
+    } catch (error) {
+      console.log("SignUpError", error.code);
+    }
+  };
 
   return (
     <View style={[signUpStyles.container]}>
@@ -64,12 +66,11 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
       />
 
       <CustomButton
-        onPress={(_) => {
-          handleSubmit(onSubmit);
-        }}
+        onPress={handleSubmit}
         style={signUpStyles.button}
+        disabled={isLoading}
       >
-        Créer un compte
+        {!isLoading ? "Créer un compte" : "Loading..."}
       </CustomButton>
 
       <CustomLink
