@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import useForm from "~/hooks/useForm";
@@ -9,6 +9,7 @@ import CustomButton from "~/components/CustomButton";
 import CustomLink from "~/components/Link";
 import { SignUpInputs } from "~/utils/types/authTypes";
 import { register } from "~/utils/authFunctions";
+import ErrorDisplay from "~/components/ErrorDisplay";
 
 type SignUpNavigationProp = StackNavigationProp<LoginStackParamList, "Sign Up">;
 
@@ -18,17 +19,25 @@ type SignUpScreenProps = {
 
 const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const { fields, updateValue } = useForm<SignUpInputs>({
     defaultValues: { email: "", password: "", confirmPassword: "" },
   });
 
   const handleSubmit = async () => {
+    setError("");
+    setIsLoading(true);
+
     try {
       await register(fields);
-    } catch (error) {
-      console.log("SignUpError", error.code);
+
+      navigation.navigate("Home");
+    } catch (err) {
+      setError(err.code);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -69,9 +78,12 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
         onPress={handleSubmit}
         style={signUpStyles.button}
         disabled={isLoading}
+        loading={isLoading}
       >
-        {!isLoading ? "Créer un compte" : "Loading..."}
+        Créer un compte
       </CustomButton>
+
+      {error !== "" && <ErrorDisplay errorMessage={error} />}
 
       <CustomLink
         title="Se connecter"

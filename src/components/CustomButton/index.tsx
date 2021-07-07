@@ -1,5 +1,6 @@
 import React, { ReactNode, useMemo } from "react";
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,6 +14,7 @@ interface CustomButtonProps extends TouchableOpacityProps {
   children: ReactNode;
   color?: ColorsName;
   preset?: "full" | "outlined";
+  loading?: boolean;
 }
 
 const CustomButton = ({
@@ -20,30 +22,35 @@ const CustomButton = ({
   color = "primary",
   preset = "full",
   style,
+  loading = false,
   ...rest
 }: CustomButtonProps) => {
   const colorFromTheme = themeColors[color];
 
+  const textColor = preset === "full" ? "#fff" : colorFromTheme;
+  const buttonContent = loading ? (
+    <ActivityIndicator color={textColor} />
+  ) : (
+    <Text style={[customButtonStyles.buttonText, { color: textColor }]}>
+      {children}
+    </Text>
+  );
+
   return (
     <View style={[style]}>
       <TouchableOpacity
+        disabled={loading}
         {...rest}
         style={[
           customButtonStyles.button,
           {
             backgroundColor: preset === "full" ? colorFromTheme : "none",
             borderColor: colorFromTheme,
+            opacity: loading ? 0.2 : 1,
           },
         ]}
       >
-        <Text
-          style={[
-            customButtonStyles.buttonText,
-            { color: preset === "full" ? "#fff" : colorFromTheme },
-          ]}
-        >
-          {children}
-        </Text>
+        {buttonContent}
       </TouchableOpacity>
     </View>
   );
