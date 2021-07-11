@@ -1,13 +1,13 @@
 import { InputError } from "../errorTypes";
 import { auth } from "../firebase";
-import { SignInInputs, SignUpInputs } from "../types/authTypes";
-
-const succesMessage = "succesMessage";
+import {
+  ResetPasswordInputs,
+  SignInInputs,
+  SignUpInputs,
+} from "../types/authTypes";
 
 export const login = async ({ email = "", password = "" }: SignInInputs) => {
   await auth.signInWithEmailAndPassword(email, password);
-
-  return succesMessage;
 };
 
 export const register = async ({
@@ -23,12 +23,12 @@ export const register = async ({
   }
 
   await auth.createUserWithEmailAndPassword(email, password);
-
-  return succesMessage;
 };
 
 export const logout = async () => {
-  auth.signOut();
+  await auth.signOut();
+};
 
-  return succesMessage;
+export const resetPassword = async ({ email }: ResetPasswordInputs) => {
+  await auth.sendPasswordResetEmail(email);
 };

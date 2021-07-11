@@ -1,10 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useAuth } from "~/contexts/AuthContext";
 
 const HomeScreen = () => {
+  const { user } = useAuth();
+
   return (
     <View>
-      <Text>Welcome Home</Text>
+      <Text>Welcome Home {user?.email}</Text>
     </View>
   );
 };

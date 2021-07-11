@@ -3,13 +3,14 @@ import { StyleSheet, Text, View } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import useForm from "~/hooks/useForm";
-import { LoginStackParamList } from "~/routes/LoginRoutes";
+import { LoginStackParamList } from "~/routes/LoginStack";
 import ControlledTextInput from "~/components/ControlledTextInput";
 import CustomButton from "~/components/CustomButton";
 import CustomLink from "~/components/Link";
 import { SignUpInputs } from "~/utils/types/authTypes";
 import { register } from "~/utils/authFunctions";
 import ErrorDisplay from "~/components/ErrorDisplay";
+import { parseErrorMessage } from "~/utils/errorsFunctions";
 
 type SignUpNavigationProp = StackNavigationProp<LoginStackParamList, "Sign Up">;
 
@@ -31,10 +32,8 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
 
     try {
       await register(fields);
-
-      navigation.navigate("Home");
     } catch (err) {
-      setError(err.code);
+      setError(parseErrorMessage(err));
     }
 
     setIsLoading(false);

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -7,8 +7,11 @@ import CustomButton from "~/components/CustomButton";
 import CustomLink from "~/components/Link";
 
 import useForm from "~/hooks/useForm";
-import { LoginStackParamList } from "~/routes/LoginRoutes";
+import { LoginStackParamList } from "~/routes/LoginStack";
 import { ResetPasswordInputs } from "~/utils/types/authTypes";
+import { parseErrorMessage } from "~/utils/errorsFunctions";
+import ErrorDisplay from "~/components/ErrorDisplay";
+import { resetPassword } from "~/utils/authFunctions";
 
 type ResetPasswordNavigationProp = StackNavigationProp<
   LoginStackParamList,
@@ -20,15 +23,26 @@ type ResetPasswordScreenProps = {
 };
 
 const ResetPasswordScreen = ({ navigation }: ResetPasswordScreenProps) => {
-  const { fields, updateValue, handleSubmit } = useForm<ResetPasswordInputs>({
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+
+  const { fields, updateValue } = useForm<ResetPasswordInputs>({
     defaultValues: { email: "" },
   });
 
-  const onSubmit = useCallback((data) => {
-    console.log(data);
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    setError("");
 
-    navigation.navigate("Sign In");
-  }, []);
+    try {
+      await resetPassword(fields);
+      navigation.navigate("Sign In");
+    } catch (err) {
+      setError(parseErrorMessage(err));
+    }
+
+    setIsLoading(false);
+  };
 
   return (
     <View style={resetPasswordStyles.container}>
@@ -43,14 +57,13 @@ const ResetPasswordScreen = ({ navigation }: ResetPasswordScreenProps) => {
       />
 
       <CustomButton
-        onPress={(_) => {
-          handleSubmit(onSubmit);
-        }}
+        onPress={handleSubmit}
         style={resetPasswordStyles.button}
+        loading={isLoading}
       >
         Réinitialiser
       </CustomButton>
-
+      {error !== "" && <ErrorDisplay errorMessage={error} />}
       <CustomLink
         title="Annuler"
         style={resetPasswordStyles.link}

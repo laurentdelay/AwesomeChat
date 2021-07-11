@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-import { LoginStackParamList } from "~/routes/LoginRoutes";
+import { LoginStackParamList } from "~/routes/LoginStack";
 import ControlledTextInput from "~/components/ControlledTextInput";
 import CustomButton from "~/components/CustomButton";
 import CustomLink from "~/components/Link";
@@ -10,6 +10,7 @@ import useForm from "~/hooks/useForm";
 import { SignInInputs } from "~/utils/types/authTypes";
 import { login } from "~/utils/authFunctions";
 import ErrorDisplay from "~/components/ErrorDisplay";
+import { parseErrorMessage } from "~/utils/errorsFunctions";
 
 type SignInNavigationProp = StackNavigationProp<LoginStackParamList, "Sign In">;
 
@@ -31,9 +32,8 @@ const SignInScreen = ({ navigation }: SignInScreenProps) => {
 
     try {
       await login(fields);
-      navigation.navigate("Home");
     } catch (err) {
-      setError(err.code);
+      setError(parseErrorMessage(err));
     }
     setIsLoading(false);
   };

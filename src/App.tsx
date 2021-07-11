@@ -1,6 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import LoginRoutes from "./routes/LoginRoutes";
+import LoginRoutes from "./routes/LoginStack";
 import AuthProvider from "./contexts/AuthContext";
 
 export default function App() {
