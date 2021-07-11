@@ -48,6 +48,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
         setCurrentUser(null);
         setIsLoggedIn(false);
       } else {
+        if (user.displayName === null || user.displayName === "") {
+          await user.updateProfile({ displayName: user.email?.split("@")[0] });
+        }
         setCurrentUser({
           displayName: user.displayName || "",
           email: user.email || "",

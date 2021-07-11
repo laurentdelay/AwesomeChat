@@ -31,7 +31,7 @@ function ControlledTextInput<FormValuesType extends Record<string, any>>({
   }, []);
 
   return (
-    <View style={style}>
+    <View style={[inputStyles.container, style]}>
       {label && (
         <Text
           style={[
@@ -64,8 +64,15 @@ function ControlledTextInput<FormValuesType extends Record<string, any>>({
 export default ControlledTextInput;
 
 const inputStyles = StyleSheet.create({
+  container: {
+    height: 60,
+
+    margin: 5,
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
   input: {
-    height: 45,
+    flex: 1,
     padding: 4,
     margin: 0,
     width: "100%",

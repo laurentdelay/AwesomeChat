@@ -4,7 +4,7 @@ type useFormParameters<T> = {
   defaultValues: T;
 };
 
-function useForm<FormValuesType extends Record<string, any>>({
+export function useForm<FormValuesType extends Record<string, any>>({
   defaultValues,
 }: useFormParameters<FormValuesType>) {
   const [formValues, setFormValues] = useState<FormValuesType>(defaultValues);
@@ -16,5 +16,3 @@ function useForm<FormValuesType extends Record<string, any>>({
 
   return { fields: formValues, updateValue };
 }
-
-export default useForm;

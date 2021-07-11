@@ -6,7 +6,7 @@ import ControlledTextInput from "~/components/ControlledTextInput";
 import CustomButton from "~/components/CustomButton";
 import CustomLink from "~/components/Link";
 
-import useForm from "~/hooks/useForm";
+import { useForm } from "~/hooks/useForm";
 import { LoginStackParamList } from "~/routes/LoginStack";
 import { ResetPasswordInputs } from "~/utils/types/authTypes";
 import { parseErrorMessage } from "~/utils/errorsFunctions";
@@ -81,7 +81,7 @@ const resetPasswordStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     padding: "10%",
   },
   input: { width: "100%" },

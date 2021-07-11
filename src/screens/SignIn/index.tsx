@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import { LoginStackParamList } from "~/routes/LoginStack";
 import ControlledTextInput from "~/components/ControlledTextInput";
 import CustomButton from "~/components/CustomButton";
 import CustomLink from "~/components/Link";
-import useForm from "~/hooks/useForm";
+import { useForm } from "~/hooks/useForm";
 import { SignInInputs } from "~/utils/types/authTypes";
 import { login } from "~/utils/authFunctions";
 import ErrorDisplay from "~/components/ErrorDisplay";
@@ -49,7 +49,6 @@ const SignInScreen = ({ navigation }: SignInScreenProps) => {
         placeholder={"Email"}
         style={signInStyles.input}
       />
-
       <ControlledTextInput<SignInInputs>
         name="password"
         label={"Mot de passe"}
@@ -60,7 +59,6 @@ const SignInScreen = ({ navigation }: SignInScreenProps) => {
         placeholder={"Mot de passe"}
         style={signInStyles.input}
       />
-
       <CustomButton
         onPress={handleSubmit}
         style={signInStyles.button}
@@ -68,9 +66,7 @@ const SignInScreen = ({ navigation }: SignInScreenProps) => {
       >
         Connexion
       </CustomButton>
-
       {error !== "" && <ErrorDisplay errorMessage={error} />}
-
       <CustomLink
         title="Créer un compte"
         style={signInStyles.link}
@@ -78,7 +74,6 @@ const SignInScreen = ({ navigation }: SignInScreenProps) => {
           navigation.navigate("Sign Up");
         }}
       />
-
       <CustomLink
         title={"Mot de passe oublié?"}
         style={signInStyles.link}
@@ -94,7 +89,7 @@ const signInStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     padding: "10%",
   },
   input: { width: "100%" },

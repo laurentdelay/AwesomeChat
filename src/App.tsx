@@ -1,14 +1,17 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import LoginRoutes from "./routes/LoginStack";
+import LoginNav from "./routes/LoginStack";
 import AuthProvider from "./contexts/AuthContext";
+import { KeyboardAvoidingView } from "react-native";
 
 export default function App() {
   return (
-    <AuthProvider>
-      <NavigationContainer>
-        <LoginRoutes />
-      </NavigationContainer>
-    </AuthProvider>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
+      <AuthProvider>
+        <NavigationContainer>
+          <LoginNav />
+        </NavigationContainer>
+      </AuthProvider>
+    </KeyboardAvoidingView>
   );
 }

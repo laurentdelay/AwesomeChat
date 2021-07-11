@@ -11,7 +11,7 @@ import {
 import themeColors, { ColorsName } from "~/utils/colors";
 
 interface CustomButtonProps extends TouchableOpacityProps {
-  children: ReactNode;
+  children: ReactNode | string;
   color?: ColorsName;
   preset?: "full" | "outlined";
   loading?: boolean;
@@ -28,16 +28,24 @@ const CustomButton = ({
   const colorFromTheme = themeColors[color];
 
   const textColor = preset === "full" ? "#fff" : colorFromTheme;
-  const buttonContent = loading ? (
+
+  const buttonContent =
+    typeof children === "string" ? (
+      <Text style={[customButtonStyles.buttonText, { color: textColor }]}>
+        {children}
+      </Text>
+    ) : (
+      <>{children}</>
+    );
+
+  const buttonDisplay = loading ? (
     <ActivityIndicator color={textColor} />
   ) : (
-    <Text style={[customButtonStyles.buttonText, { color: textColor }]}>
-      {children}
-    </Text>
+    buttonContent
   );
 
   return (
-    <View style={[style]}>
+    <View style={[customButtonStyles.container, style]}>
       <TouchableOpacity
         disabled={loading}
         {...rest}
@@ -50,7 +58,7 @@ const CustomButton = ({
           },
         ]}
       >
-        {buttonContent}
+        {buttonDisplay}
       </TouchableOpacity>
     </View>
   );
@@ -59,12 +67,18 @@ const CustomButton = ({
 export default CustomButton;
 
 const customButtonStyles = StyleSheet.create({
+  container: { height: 45, margin: 5 },
   button: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
     elevation: 2,
     borderRadius: 8,
     borderWidth: 3,
     paddingVertical: 10,
     paddingHorizontal: 12,
+    height: "100%",
+    width: "100%",
   },
   buttonText: {
     fontSize: 18,

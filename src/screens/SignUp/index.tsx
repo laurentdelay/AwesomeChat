@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-import useForm from "~/hooks/useForm";
+import { useForm } from "~/hooks/useForm";
 import { LoginStackParamList } from "~/routes/LoginStack";
 import ControlledTextInput from "~/components/ControlledTextInput";
 import CustomButton from "~/components/CustomButton";
@@ -101,10 +101,10 @@ const signUpStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     padding: "10%",
   },
   input: { width: "100%" },
-  button: { width: "100%", marginTop: 5 },
+  button: { width: "100%" },
   link: { marginTop: 5 },
 });
