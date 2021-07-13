@@ -14,6 +14,7 @@ export const register = async ({
   email = "",
   password = "",
   confirmPassword = "",
+  displayName = "",
 }: SignUpInputs) => {
   if (password !== confirmPassword) {
     throw new InputError(
@@ -22,7 +23,11 @@ export const register = async ({
     );
   }
 
-  await auth.createUserWithEmailAndPassword(email, password);
+  const verifiedDN = displayName || email.split("@")[0];
+  const { user } = await auth.createUserWithEmailAndPassword(email, password);
+
+  user?.sendEmailVerification();
+  user?.updateProfile({ displayName: verifiedDN });
 };
 
 export const logout = async () => {

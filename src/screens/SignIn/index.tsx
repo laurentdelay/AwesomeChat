@@ -1,16 +1,17 @@
-import React, { useCallback, useState } from "react";
-import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import { LoginStackParamList } from "~/routes/LoginStack";
 import ControlledTextInput from "~/components/ControlledTextInput";
 import CustomButton from "~/components/CustomButton";
-import CustomLink from "~/components/Link";
+import CustomLink from "~/components/CustomLink";
 import { useForm } from "~/hooks/useForm";
 import { SignInInputs } from "~/utils/types/authTypes";
 import { login } from "~/utils/authFunctions";
 import ErrorDisplay from "~/components/ErrorDisplay";
 import { parseErrorMessage } from "~/utils/errorsFunctions";
+import NotVerifiedWarning from "~/components/NotVerifiedWarning";
 
 type SignInNavigationProp = StackNavigationProp<LoginStackParamList, "Sign In">;
 

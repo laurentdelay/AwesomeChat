@@ -3,6 +3,8 @@ import "firebase/firestore";
 import "firebase/auth";
 import { firebaseDevConfig } from "./env";
 
+export type User = firebase.User | null;
+
 const fireApp = firebase.initializeApp(firebaseDevConfig);
 
 export const auth = fireApp.auth();

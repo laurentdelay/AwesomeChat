@@ -56,6 +56,10 @@ function ControlledTextInput<FormValuesType extends Record<string, any>>({
           },
         ]}
         {...InputProps}
+        {...(InputProps.textContentType === "emailAddress" && {
+          autoCapitalize: "none",
+          keyboardType: "email-address",
+        })}
       />
     </View>
   );

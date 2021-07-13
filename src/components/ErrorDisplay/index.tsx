@@ -29,7 +29,7 @@ const errorStyles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
 
-    backgroundColor: "rgba(255,0,0, 0.2)",
+    backgroundColor: alertColor.toString() + "33",
   },
   errorText: {
     color: alertColor,

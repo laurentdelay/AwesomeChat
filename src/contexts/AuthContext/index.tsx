@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { createContext, ReactNode, useContext, useReducer } from "react";
-import { auth } from "~/utils/firebase";
+import { Text } from "react-native";
+import { auth, User } from "~/utils/firebase";
 
 /**
  *
@@ -9,18 +10,15 @@ import { auth } from "~/utils/firebase";
  *
  */
 
-export type User = {
-  displayName: string;
-  email: string;
-  verifiedEmail: boolean;
-} | null;
-
 interface AuthState {
   user: User;
   isLoggedIn: boolean;
 }
 
-const initialAuthState = { user: null, isLoggedIn: false };
+const initialAuthState: AuthState = {
+  user: null,
+  isLoggedIn: false,
+};
 
 const AuthContext = createContext<AuthState>(initialAuthState);
 
@@ -42,22 +40,17 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     auth.useDeviceLanguage();
+    auth.languageCode = "fr";
 
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user === initialAuthState.user) {
+      if (user === null) {
         setCurrentUser(null);
         setIsLoggedIn(false);
-      } else {
-        if (user.displayName === null || user.displayName === "") {
-          await user.updateProfile({ displayName: user.email?.split("@")[0] });
-        }
-        setCurrentUser({
-          displayName: user.displayName || "",
-          email: user.email || "",
-          verifiedEmail: user.emailVerified,
-        });
-        setIsLoggedIn(true);
+        return;
       }
+
+      setCurrentUser(user);
+      setIsLoggedIn(true);
     });
 
     return unsubscribe;

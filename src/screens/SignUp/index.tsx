@@ -6,7 +6,7 @@ import { useForm } from "~/hooks/useForm";
 import { LoginStackParamList } from "~/routes/LoginStack";
 import ControlledTextInput from "~/components/ControlledTextInput";
 import CustomButton from "~/components/CustomButton";
-import CustomLink from "~/components/Link";
+import CustomLink from "~/components/CustomLink";
 import { SignUpInputs } from "~/utils/types/authTypes";
 import { register } from "~/utils/authFunctions";
 import ErrorDisplay from "~/components/ErrorDisplay";
@@ -23,7 +23,12 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
   const [error, setError] = useState<string>("");
 
   const { fields, updateValue } = useForm<SignUpInputs>({
-    defaultValues: { email: "", password: "", confirmPassword: "" },
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      displayName: "",
+    },
   });
 
   const handleSubmit = async () => {
@@ -45,9 +50,21 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
         name="email"
         label={"Email"}
         onInputChange={updateValue}
-        textContentType="emailAddress"
+        textContentType={"emailAddress"}
+        autoCompleteType="email"
         value={fields.email}
         placeholder={"Email"}
+        style={signUpStyles.input}
+      />
+
+      <ControlledTextInput<SignUpInputs>
+        name="displayName"
+        label="Pseudo"
+        onInputChange={updateValue}
+        textContentType={"nickname"}
+        autoCompleteType="username"
+        value={fields.displayName}
+        placeholder={"Pseudo"}
         style={signUpStyles.input}
       />
 

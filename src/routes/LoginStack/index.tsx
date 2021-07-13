@@ -38,6 +38,7 @@ const LoginNav = () => {
     navigation: StackNavigationProp<LoginStackParamList, "Home">;
   }): StackNavigationOptions => ({
     headerTitle: getFocusedRouteNameFromRoute(route),
+
     headerLeft: () => (
       <TouchableOpacity
         onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
@@ -57,11 +58,29 @@ const LoginNav = () => {
         />
       ) : (
         <>
-          <LoginStack.Screen name="Sign In" component={SignInScreen} />
-          <LoginStack.Screen name="Sign Up" component={SignUpScreen} />
+          <LoginStack.Screen
+            name="Sign In"
+            component={SignInScreen}
+            options={{
+              animationTypeForReplace: "pop",
+              headerTitle: "Connexion",
+            }}
+          />
+          <LoginStack.Screen
+            name="Sign Up"
+            component={SignUpScreen}
+            options={{
+              headerTitle: "Nouveau compte",
+              headerBackTitleVisible: false,
+            }}
+          />
           <LoginStack.Screen
             name="Reset Password"
             component={ResetPasswordScreen}
+            options={{
+              headerTitle: "Mot de passe oublié",
+              headerBackTitleVisible: false,
+            }}
           />
         </>
       )}
