@@ -1,7 +1,7 @@
 import { ColorValue } from "react-native";
 
 export const primaryColor: ColorValue = "#0099ff";
-export const secondaryColor: ColorValue = "#ffffff";
+export const secondaryColor: ColorValue = "#b5b5b5";
 export const alertColor: ColorValue = "#ff0000";
 export const warningColor: ColorValue = "#fa9923";
 export const successColor: ColorValue = "#00ff00";

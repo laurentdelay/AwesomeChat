@@ -1,38 +1,67 @@
-import React from "react";
-import { ListRenderItem, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useCallback } from "react";
+import { ActivityIndicator, ListRenderItem, StyleSheet } from "react-native";
 
 import { FlatList } from "react-native-gesture-handler";
-import { fireDocumentData } from "~/utils/firebase";
 import MessageDisplay from "./MessageDisplay";
+import { MessageData } from "~/utils/messagesFunctions";
+import { Data } from "react-firebase-hooks/firestore/dist/firestore/types";
+import { useState } from "react";
+import { useEffect } from "react";
 
 type MessagesViewProps = {
-  messages: fireDocumentData[];
+  messages: Data<MessageData>[] | undefined;
+  loadMore?: () => void;
+  loading?: boolean;
 };
 
-const MessagesView = ({ messages }: MessagesViewProps) => {
-  const renderItem: ListRenderItem<fireDocumentData> = ({ item: message }) => {
-    const { author, body, createdAt } = message.data();
+const MessagesView = ({
+  messages,
+  loadMore = () => {},
+  loading = false,
+}: MessagesViewProps) => {
+  const renderItem: ListRenderItem<Data<MessageData, "id">> = useCallback(
+    ({ item: message }) => {
+      const { id, author, body, createdAt } = message;
 
-    return (
-      <MessageDisplay
-        key={message.id}
-        author={author}
-        body={body}
-        createdAt={createdAt}
-      />
-    );
-  };
+      return (
+        <MessageDisplay
+          key={id}
+          author={author}
+          body={body}
+          createdAt={createdAt}
+        />
+      );
+    },
+    []
+  );
 
+  const [messagesBackUp, setMessagesBackUp] = useState<
+    Data<MessageData>[] | undefined
+  >(undefined);
+
+  useEffect(() => {
+    if (messages !== undefined) {
+      setMessagesBackUp(messages);
+    }
+  }, [messages]);
   return (
-    <FlatList
-      data={messages}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-    />
+    <>
+      {loading && <ActivityIndicator />}
+      <FlatList
+        style={messagesViewStyles.messageList}
+        data={loading ? messagesBackUp : messages}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        inverted
+        onEndReached={loadMore}
+        onEndReachedThreshold={-0.1}
+      />
+    </>
   );
 };
 
 export default MessagesView;
 
-const styles = StyleSheet.create({});
+const messagesViewStyles = StyleSheet.create({
+  messageList: { flex: 1 },
+});
