@@ -52,7 +52,7 @@ const CustomButton = ({
         style={[
           customButtonStyles.button,
           {
-            backgroundColor: preset === "full" ? colorFromTheme : "none",
+            backgroundColor: preset === "full" ? colorFromTheme : "transparent",
             borderColor: colorFromTheme,
             opacity: loading ? 0.2 : 1,
           },

@@ -25,7 +25,7 @@ const ChatForm = () => {
     try {
       await sendMessage({
         ...fields,
-        author: user.displayName,
+        author: user.displayName || "",
         createdAt: new Date(),
       });
       updateValue("body", "");
