@@ -7,7 +7,7 @@ import ModificationModal from "~/components/ModificationModal";
 import ProfilePic from "~/components/ProfilePic";
 import { useAuth } from "~/contexts/AuthContext";
 import { imageStorageRef, TaskStates, UploadTask } from "~/utils/firebase";
-import { profileStyles } from "..";
+import { profileStyles } from "../profileStyles";
 import ProgressBar from "./ProgressBar";
 
 type ProfilePictureChangeProps = {
@@ -100,6 +100,7 @@ const ProfilePictureChange = ({ handleClose }: ProfilePictureChangeProps) => {
       <ProfilePic
         picUri={localImage === "" ? user?.photoURL : localImage}
         hasChanged={localImage !== ""}
+        width={220}
       />
 
       {!isLoading && (

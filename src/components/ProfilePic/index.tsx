@@ -1,43 +1,37 @@
 import React from "react";
 import { StyleSheet, View, Image } from "react-native";
-import {
-  CacheManager,
-  Image as CachedImage,
-} from "react-native-expo-image-cache";
+import { Image as CachedImage } from "react-native-expo-image-cache";
 import { defaultProfilePic } from "~/images";
 import { primaryColor } from "~/utils/colors";
 
 type ProfilePicProps = {
   picUri?: string | null;
   hasChanged?: boolean;
+  width?: number;
 };
 
-const ProfilePic = ({ picUri = null, hasChanged = false }: ProfilePicProps) => {
-  const path = CacheManager;
-
-  if (picUri === null || hasChanged) {
-    return (
-      <View style={picStyles.picContainer}>
-        <Image
-          source={picUri === null ? defaultProfilePic : { uri: picUri }}
-          style={picStyles.profilePic}
-        />
-      </View>
-    );
-  }
-
-  return (
-    <View style={picStyles.picContainer}>
+const ProfilePic = ({
+  picUri = null,
+  hasChanged = false,
+  width = 150,
+}: ProfilePicProps) => {
+  const image =
+    picUri === null || hasChanged ? (
+      <Image
+        source={picUri === null ? defaultProfilePic : { uri: picUri }}
+        style={picStyles.profilePic}
+      />
+    ) : (
       <CachedImage style={picStyles.profilePic} {...{ uri: picUri }} />
-    </View>
-  );
+    );
+
+  return <View style={[picStyles.picContainer, { width }]}>{image}</View>;
 };
 
 export default ProfilePic;
 
 const picStyles = StyleSheet.create({
   picContainer: {
-    width: 200,
     aspectRatio: 1 / 1,
     borderRadius: 1000,
     borderWidth: 2,

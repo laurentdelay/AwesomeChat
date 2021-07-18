@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import ProfilePic from "~/components/ProfilePic";
 import { useAuth } from "~/contexts/AuthContext";
 import themeColors from "~/utils/colors";
 import { MessageData } from "~/utils/messagesFunctions";
@@ -14,19 +15,26 @@ const MessageDisplay = ({ body, author }: MessageDisplayProps) => {
     <View
       style={[
         messageStyles.messageContainer,
-        {
-          alignItems: isUserAuthor ? "flex-end" : "flex-start",
-        },
+        isUserAuthor
+          ? {
+              flexDirection: "row-reverse",
+            }
+          : {},
       ]}
     >
-      <Text style={messageStyles.authorName}>{author}</Text>
-      <View
-        style={[
-          messageStyles.bubble,
-          isUserAuthor ? messageStyles.userBubble : messageStyles.contactBubble,
-        ]}
-      >
-        <Text style={messageStyles.messageText}>{body}</Text>
+      <ProfilePic picUri={user?.photoURL} width={40} />
+      <View style={messageStyles.messageContent}>
+        <Text style={messageStyles.authorName}>{author}</Text>
+        <View
+          style={[
+            messageStyles.bubble,
+            isUserAuthor
+              ? messageStyles.userBubble
+              : messageStyles.contactBubble,
+          ]}
+        >
+          <Text style={messageStyles.messageText}>{body}</Text>
+        </View>
       </View>
     </View>
   );
@@ -37,13 +45,17 @@ export default MessageDisplay;
 const messageStyles = StyleSheet.create({
   messageContainer: {
     flex: 1,
-    justifyContent: "center",
+    flexDirection: "row",
     padding: 5,
+    alignItems: "flex-end",
+    justifyContent: "flex-start",
+  },
+  messageContent: {
+    marginHorizontal: 8,
   },
   bubble: {
     borderRadius: 8,
     padding: 10,
-    maxWidth: "60%",
   },
   userBubble: {
     backgroundColor: themeColors.primary,

@@ -5,7 +5,7 @@ import CustomButton from "~/components/CustomButton";
 import ModificationModal from "~/components/ModificationModal";
 import { useAuth } from "~/contexts/AuthContext";
 import { useForm } from "~/hooks/useForm";
-import { profileStyles } from "..";
+import { profileStyles } from "../profileStyles";
 
 type DisplayNameChangeProps = {
   handleClose: () => void;
