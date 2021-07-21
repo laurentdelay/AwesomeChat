@@ -7,6 +7,7 @@ import CustomButton from "~/components/CustomButton";
 import { useAuth } from "~/contexts/AuthContext";
 import { useForm } from "~/hooks/useForm";
 import { sendMessage } from "~/utils/messagesFunctions";
+import { parseErrorMessage } from "~/utils/errorsFunctions";
 
 type MessageInput = { body: string };
 
@@ -25,12 +26,12 @@ const ChatForm = () => {
     try {
       await sendMessage({
         ...fields,
-        author: user.displayName || "",
+        authorUid: user.uid || "",
         createdAt: new Date(),
       });
       updateValue("body", "");
     } catch (error) {
-      console.error(error);
+      parseErrorMessage(error);
     }
   };
   return (

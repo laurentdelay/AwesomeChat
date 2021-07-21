@@ -6,7 +6,12 @@ import CustomLink from "~/components/CustomLink";
 import ModificationModal from "~/components/ModificationModal";
 import ProfilePic from "~/components/ProfilePic";
 import { useAuth } from "~/contexts/AuthContext";
-import { imageStorageRef, TaskStates, UploadTask } from "~/utils/firebase";
+import {
+  imageStorageRef,
+  TaskStates,
+  UploadTask,
+  userStore,
+} from "~/utils/firebase";
 import { profileStyles } from "../profileStyles";
 import ProgressBar from "./ProgressBar";
 
@@ -68,6 +73,7 @@ const ProfilePictureChange = ({ handleClose }: ProfilePictureChangeProps) => {
 
           await user.updateProfile({ photoURL: imageUrl });
 
+          await userStore.doc(user?.uid).update({ profilePic: imageUrl });
           setIsLoading(false);
           handleClose();
         }
@@ -81,6 +87,7 @@ const ProfilePictureChange = ({ handleClose }: ProfilePictureChangeProps) => {
   const handleAvatarDelete = async () => {
     try {
       await user?.updateProfile({ photoURL: null });
+      await userStore.doc(user?.uid).update({ profilePic: null });
       handleClose();
     } catch (error) {}
   };

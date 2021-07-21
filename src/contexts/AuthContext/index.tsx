@@ -1,14 +1,6 @@
 import React, { useEffect } from "react";
-import { useState } from "react";
-import { createContext, ReactNode, useContext, useReducer } from "react";
-import { Text } from "react-native";
+import { useState, createContext, ReactNode, useContext } from "react";
 import { auth, User } from "~/utils/firebase";
-
-/**
- *
- * Définition du context
- *
- */
 
 interface AuthState {
   user: User;

@@ -5,12 +5,20 @@ import { useAuth } from "~/contexts/AuthContext";
 import themeColors from "~/utils/colors";
 import { MessageData } from "~/utils/messagesFunctions";
 
-interface MessageDisplayProps extends MessageData {}
+interface MessageDisplayProps extends MessageData {
+  profilePic: string | null;
+  authorName: string;
+}
 
-const MessageDisplay = ({ body, author }: MessageDisplayProps) => {
+const MessageDisplay = ({
+  body,
+  authorUid,
+  authorName,
+  profilePic,
+}: MessageDisplayProps) => {
   const { user } = useAuth();
 
-  const isUserAuthor = user?.displayName === author;
+  const isUserAuthor = user?.uid === authorUid;
   return (
     <View
       style={[
@@ -22,9 +30,9 @@ const MessageDisplay = ({ body, author }: MessageDisplayProps) => {
           : {},
       ]}
     >
-      <ProfilePic picUri={user?.photoURL} width={40} />
+      <ProfilePic picUri={profilePic} width={40} />
       <View style={messageStyles.messageContent}>
-        <Text style={messageStyles.authorName}>{author}</Text>
+        <Text style={messageStyles.authorName}>{authorName}</Text>
         <View
           style={[
             messageStyles.bubble,

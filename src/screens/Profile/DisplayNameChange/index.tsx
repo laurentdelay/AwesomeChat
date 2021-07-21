@@ -5,6 +5,7 @@ import CustomButton from "~/components/CustomButton";
 import ModificationModal from "~/components/ModificationModal";
 import { useAuth } from "~/contexts/AuthContext";
 import { useForm } from "~/hooks/useForm";
+import { userStore } from "~/utils/firebase";
 import { profileStyles } from "../profileStyles";
 
 type DisplayNameChangeProps = {
@@ -25,6 +26,9 @@ const DisplayNameChange = ({ handleClose }: DisplayNameChangeProps) => {
     setIsLoading(true);
     try {
       await user?.updateProfile({ displayName: fields.displayName });
+      await userStore
+        .doc(user?.uid)
+        .update({ displayName: fields.displayName });
     } catch (error) {}
 
     await setIsLoading(false);

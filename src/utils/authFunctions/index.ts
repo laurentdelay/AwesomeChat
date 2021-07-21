@@ -1,5 +1,5 @@
 import { InputError } from "../errorTypes";
-import { auth } from "../firebase";
+import { auth, userStore } from "../firebase";
 import {
   ResetPasswordInputs,
   SignInInputs,
@@ -28,6 +28,9 @@ export const register = async ({
 
   user?.sendEmailVerification();
   user?.updateProfile({ displayName: verifiedDN });
+  userStore
+    .doc(user?.uid)
+    .set({ displayName: verifiedDN, profilePic: user?.photoURL });
 };
 
 export const logout = async () => {

@@ -2,7 +2,7 @@ import { messagesStore } from "../firebase";
 
 export interface MessageData {
   body: string;
-  author: string;
+  authorUid: string;
   createdAt: Date;
 }
 

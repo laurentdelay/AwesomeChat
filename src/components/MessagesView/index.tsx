@@ -7,6 +7,8 @@ import { MessageData } from "~/utils/messagesFunctions";
 import { Data } from "react-firebase-hooks/firestore/dist/firestore/types";
 import { useState } from "react";
 import { useEffect } from "react";
+import { UserDetails } from "~/utils/firebase";
+import { useChatUsers } from "~/contexts/ChatUsersContext";
 
 type MessagesViewProps = {
   messages: Data<MessageData>[] | undefined;
@@ -19,20 +21,29 @@ const MessagesView = ({
   loadMore = () => {},
   loading = false,
 }: MessagesViewProps) => {
+  const { chatUsers } = useChatUsers();
+
   const renderItem: ListRenderItem<Data<MessageData, "id">> = useCallback(
     ({ item: message }) => {
-      const { id, author, body, createdAt } = message;
+      const { id, authorUid, body, createdAt } = message;
+
+      const user = chatUsers.get(authorUid) || {
+        displayName: "User",
+        profilePic: null,
+      };
 
       return (
         <MessageDisplay
           key={id}
-          author={author}
+          authorUid={authorUid}
+          authorName={user.displayName}
+          profilePic={user.profilePic}
           body={body}
           createdAt={createdAt}
         />
       );
     },
-    []
+    [chatUsers]
   );
 
   const [messagesBackUp, setMessagesBackUp] = useState<

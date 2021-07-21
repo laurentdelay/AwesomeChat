@@ -12,11 +12,13 @@ module.exports = {
   env: {
     production: {
       plugins: [
-        "babel-plugin-root-import",
-        {
-          rootPathPrefix: "~",
-          rootPathSuffix: "src",
-        },
+        [
+          "babel-plugin-root-import",
+          {
+            rootPathPrefix: "~",
+            rootPathSuffix: "src",
+          },
+        ],
       ],
     },
   },
